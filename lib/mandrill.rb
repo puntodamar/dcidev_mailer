@@ -1,11 +1,11 @@
 require "mandrill"
 
 module DcidevMailer
-    class DcidevMandrill < MandrillMailer::MessageMailer
+    class Mandrill < MandrillMailer::MessageMailer
         default from: ENV['DEFAULT_EMAIL_SENDER']
 
         class << self
-            def send_email(subject: "", html_body: "", to: nil, attachments: nil, email: "", email_template_path: "")
+            def send_email(subject: "", html_body: "", to: nil, from: nil, attachments: nil, email_template_path: "")
                 ac = ActionController::Base.new
                 locals, images = DcidevMailer.format_image_from_html(html_body)
                 html_body = ac.render_to_string(template: email_template_path, locals: locals)
@@ -13,8 +13,9 @@ module DcidevMailer
                 response = self.send_mail(subject, to, html_body, attachments, images).deliver_now
             end
 
-            def send_mail(subject, to, html, attachments = nil, images = nil)
+            def send_mail(subject, to, html, attachments = nil, images = nil, from: nil)
                 mandrill_mail subject: subject,
+                                from: from,
                               # to: "dev.puntodamar@gmail.com",
                               to: to,
                               # to: { email: invitation.email, name: 'Honored Guest' },
