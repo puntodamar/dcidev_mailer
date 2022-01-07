@@ -1,7 +1,7 @@
 require 'mail'
 
 module DcidevMailer
-    class Rails < ApplicationMailer
+    class Rails < ActionMailer::Base
         default from: ENV['DEFAULT_EMAIL_SENDER']
 
         class << self
