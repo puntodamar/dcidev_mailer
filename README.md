@@ -101,8 +101,8 @@ class MandrillMailer
         rescue => e
             error_message = "[SEND EMAIL] " + e.try(: to_s)
         ensure
-              EmailHistory.create(application: customer.application, template: email_template, status: response[0]["status"] == "sent" ? : sent:: failed, mail_provider_id: response[0]["_id"], form_cetak_attachment: attachments.present ? , error_message : response[0]["reject_reason"]) if response.present ?
-              ApplicationHistory.log(description: error_message || description, application: customer.application)
+             EmailHistory.create(application: customer.application, template: email_template, status: response[0]["status"] == "sent" ? : sent:: failed, mail_provider_id: response[0]["_id"], form_cetak_attachment: attachments.present ? , error_message : response[0]["reject_reason"]) if response.present ?
+             ApplicationHistory.log(description: error_message || description, application: customer.application)
       end
   end 
 end
