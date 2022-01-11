@@ -59,8 +59,7 @@ ActionMailer::Base.default_url_options = {
 }
 ActionMailer::Base.register_preview_interceptor(ActionMailer::InlinePreviewInterceptor)
 
-# Don 't care if the mailer can'
-t send.
+# Don 't care if the mailer can't send.
 ActionMailer::Base.raise_delivery_errors = true
 ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.perform_caching = false
