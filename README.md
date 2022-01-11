@@ -91,8 +91,8 @@ class MandrillMailer
                 header_url: email_template.header.try(: url),
                 footer_url: email_template.footer.try(: url),
                 to: customer.email,
-                cc: nil,
-                bcc: nil,
+                cc: nil, # can be a string / array
+                bcc: nil, # can be a string / array
                 from: ENV['DEFAULT_EMAIL_SENDER'],
                 attachments: attachments,
                 email_template_path: "mail/blast.html.erb"
@@ -129,8 +129,8 @@ class MortgageMailer
                     footer_url: template.footer.try(:url),  
                     file_attachments: file_attachments,  
                     to: customer.email,  
-                    cc: nil,
-                    bcc: nil,
+                    cc: nil, # can be a string / array
+                    bcc: nil, # can be a string / array
                     subject: template.subject,  
                     from: ENV['DEFAULT_EMAIL_SENDER'],  
                     template_path: "mail/blast.html.erb"  # specify template file location
