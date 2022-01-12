@@ -27,13 +27,12 @@ MAILER_SMTP_TLS=
 
 Add this to `config/initializer/mailer.rb`
 ```ruby
-ActionMailer::Base.delivery_method =: smtp
+ActionMailer::Base.delivery_method = :smtp
 
 # change it to your helper class name
 ActionMailer::Base.add_delivery_method: mandrill_mailer, MandrillMailer
 
-# uncomment
-if neccessary
+# uncomment if neccessary
 smtp_settings = {
     address: ENV["USE_MANDRILL_MAILER"].to_i == 1 ? ENV['MANDRILL_SMTP_ADDRESS'] : ENV["MAILER_SMTP_ADDRESS"],
     # authentication: ENV["USE_MANDRILL_MAILER"].to_i == 1 ? 'plain' : nil,
@@ -47,15 +46,15 @@ smtp_settings = {
 }
 
 if ENV["USE_MANDRILL_MAILER"].to_i == 1
-smtp_settings[: authentication] = 'plain'
-smtp_settings[: password] = ENV['MANDRILL_SMTP_PASSWORD']
-smtp_settings[: user_name] = ENV['MANDRILL_SMTP_USERNAME']
+ smtp_settings[:authentication] = 'plain'
+ smtp_settings[:password] = ENV['MANDRILL_SMTP_PASSWORD']
+ smtp_settings[:user_name] = ENV['MANDRILL_SMTP_USERNAME']
 end
 
 ActionMailer::Base.smtp_settings = smtp_settings
 
 ActionMailer::Base.default_url_options = {
-    : host => ENV["BASE_URL_FE"]
+    host: ENV["BASE_URL_FE"]
 }
 ActionMailer::Base.register_preview_interceptor(ActionMailer::InlinePreviewInterceptor)
 
