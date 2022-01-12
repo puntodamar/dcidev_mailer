@@ -16,10 +16,11 @@ module DcidevMailer
 
       locals = { wording: wording, header: nil, footer: nil }
       locals, images = DcidevMailer.format_header_footer(header_url: header_url, footer_url: footer_url, locals: locals, images: images) if header_url.present? && footer_url.present?
-
+      
+      file_attachments = DcidevMailer.format_attachments(file_attachments) if file_attachments.present?
       if file_attachments.present?
         file_attachments.each do |a|
-          am.attachments[a[:name].to_s] = a[:content] unless a[:content].nil?
+          attachments[a[:name].to_s] = a[:content] unless a[:content].nil?
         end
       end
 
