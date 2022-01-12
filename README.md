@@ -146,6 +146,12 @@ class MortgageMailer
 end
 ```
 
+### Sending Attachments
+The attachment is an array of hashes containing attachment file and filename
+```ruby
+attachments = [{file: DcidevUtility.download_to_file(self.ktp.url), filename: self.reference_number}]
+```
+
 ### Helpers
 ```ruby
 # convert all image URL in <img src="url"> to <img src="cid:xxxx">
