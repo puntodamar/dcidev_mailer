@@ -133,7 +133,7 @@ class MortgageMailer
                     subject: template.subject,  
                     from: ENV['DEFAULT_EMAIL_SENDER'],  
                     template_path: "mail/blast.html.erb"  # specify template file location
-                )  
+                ).deliver_now  
             rescue => e  
                 error_message = "[SEND EMAIL] " + e.try(:to_s)  
             ensure  
@@ -160,6 +160,6 @@ DcidevMailer::format_image_from_html(html)
 DcidevMailer::format_attachments(attachments)
 
 # format email header & footer url to be embedded to html body
-# refer to class DcidevMailer::Mandrill or DcidevMailer::Rails to understand more of this method
+# refer to class DcidevMailer::Mandrill or DcidevMailer::Rails for more details about the usage
 DcidevMailer::format_header_footer(header_url: "", footer_url: "", locals: {}, images: {})
 ```
