@@ -133,7 +133,7 @@ class MortgageMailer
                     subject: template.subject,  
                     from: ENV['DEFAULT_EMAIL_SENDER'],  
                     template_path: "mail/blast.html.erb"  # specify template file location
-                ).deliver_now  
+                ).deliver_now!  
             rescue => e  
                 error_message = "[SEND EMAIL] " + e.try(:to_s)  
             ensure  
