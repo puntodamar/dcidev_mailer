@@ -18,20 +18,16 @@ module DcidevMailer
     def format_attachments(attachments)
       formatted = []
       attachments.each do |a|
-        begin
-          filetype = MimeMagic.by_magic(a[:file]).type.to_s
-          content = a[:file].read
-          name = "#{a[:filename]}.#{filetype.split("/")[1]}"
-          att = {
-            content: content,
-            name: name,
-          }
+        filetype = MimeMagic.by_magic(a[:file]).type.to_s
+        content = a[:file].read
+        name = "#{a[:filename]}.#{filetype.split("/")[1]}"
+        att = {
+          content: content,
+          name: name,
+        }
 
-          att[:type] = filetype if ENV["USE_MANDRILL_MAILER"].to_i == 0
-          formatted << att
-        rescue => _
-
-        end
+        att[:type] = filetype if ENV["USE_MANDRILL_MAILER"].to_i == 0
+        formatted << att
       end
       formatted
     end
