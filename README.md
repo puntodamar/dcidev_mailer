@@ -132,7 +132,6 @@ class MandrillMailer
                 from: ENV['DEFAULT_EMAIL_SENDER'],
                 from_name: ENV['DEFAULT_EMAIL_SENDER_NAME'],
                 attachments: attachments,
-                # specify template file location
             )
         rescue => e
             error_message = "[SEND EMAIL] " + e.try(:to_s)
