@@ -30,7 +30,7 @@ Add this to `config/initializer/mailer.rb`
 ActionMailer::Base.delivery_method = :smtp
 
 # change it to your helper class name
-ActionMailer::Base.add_delivery_method: mandrill_mailer, MandrillMailer
+ActionMailer::Base.add_delivery_method :mandrill_mailer, MandrillMailer
 
 # uncomment if neccessary
 smtp_settings = {
@@ -63,9 +63,9 @@ ActionMailer::Base.raise_delivery_errors = true
 ActionMailer::Base.perform_deliveries = true
 ActionMailer::Base.perform_caching = false
 
-MandrillMailer.configure do |config |
+MandrillMailer.configure do |config|
     config.api_key = ENV["MANDRILL_SMTP_PASSWORD"]
-    config.deliver_later_queue_name =: default
+    config.deliver_later_queue_name :default
 end
 ```
  
@@ -82,25 +82,62 @@ class MandrillMailer
   class << self
     def send_email(customer: nil, email_template: nil, attachments: nil, description: nil)
         raise "invalid customer"if customer.nil?
-        raise "invalid template" if email_template.nil ?
+        raise "invalid template" if email_template.nil?
         begin
             response = ::DcidevMailer::Mandrill.send_email(
                 subject: email_template.subject,
                 html_body: MailerHelper.format_wording(email_template.wording, customer),
-                header_url: email_template.header.try(: url),
-                footer_url: email_template.footer.try(: url),
-                to: customer.email,
+                header_url: email_template.header.try(:url),
+                footer_url: email_template.footer.try(:url),
+                # to: customer.email / can also accept string
+                to: [{name: "Punto Damar P", type: "to", email: "punto@privyid.tech"}],
                 cc: nil, # can be a string / array
                 bcc: nil, # can be a string / array
                 from: ENV['DEFAULT_EMAIL_SENDER'],
+                from_name: ENV['DEFAULT_EMAIL_SENDER_NAME'],
                 attachments: attachments,
                 email_template_path: "mail/blast.html.erb"
                 # specify template file location
             )
         rescue => e
-            error_message = "[SEND EMAIL] " + e.try(: to_s)
+            error_message = "[SEND EMAIL] " + e.try(:to_s)
         ensure
-             EmailHistory.create(application: customer.application, template: email_template, status: response[0]["status"] == "sent" ? : sent:: failed, mail_provider_id: response[0]["_id"], form_cetak_attachment: attachments.present ? , error_message : response[0]["reject_reason"]) if response.present ?
+             EmailHistory.create(application: customer.application, template: email_template, status: response[0]["status"] == "sent" ? :sent : :failed, mail_provider_id: response[0]["_id"], form_cetak_attachment: attachments.present?, error_message: response[0]["reject_reason"]) if response.present?
+             ApplicationHistory.log(description: error_message || description, application: customer.application)
+      end
+  end 
+end
+```
+
+
+### Mandrill Template Example
+```ruby
+require 'dcidev_mailer/mandrill_template'
+
+class MandrillMailer
+  class << self
+    def send_email(customer: nil, email_template: nil, attachments: nil, description: nil)
+        raise "invalid customer"if customer.nil?
+        raise "invalid template" if email_template.nil?
+        begin
+            response = ::DcidevMailer::MandrillTemplate.send_email(
+                subject: email_template.subject,
+                header_url: email_template.header.try(:url),
+                footer_url: email_template.footer.try(:url),
+                template_name: 'customer blast',
+                to: [{name: "Punto Damar P", type: "to", email: "punto@privyid.tech"}],
+                vars: {customer_name: "Punto Damar P", bank_name: "Bang Jago"}, # template variable name configurable from mandrill dashboard
+                cc: nil, # can be a string / array
+                bcc: nil, # can be a string / array
+                from: ENV['DEFAULT_EMAIL_SENDER'],
+                from_name: ENV['DEFAULT_EMAIL_SENDER_NAME'],
+                attachments: attachments,
+                # specify template file location
+            )
+        rescue => e
+            error_message = "[SEND EMAIL] " + e.try(:to_s)
+        ensure
+             EmailHistory.create(application: customer.application, template: email_template, status: response[0]["status"] == "sent" ? :sent : :failed, mail_provider_id: response[0]["_id"], form_cetak_attachment: attachments.present? , error_message : response[0]["reject_reason"]) if response.present?
              ApplicationHistory.log(description: error_message || description, application: customer.application)
       end
   end 
