@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
     s.name = "dcidev_mailer"
-    s.version = "0.0.14"
+    s.version = "0.0.15"
     # s.date = ""
     s.summary = "Commonly used email codes"
     s.description = "Testing phase"

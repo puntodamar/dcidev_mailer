@@ -24,8 +24,8 @@ module DcidevMailer
         end
       end
 
-      attachments.inline['header'] = File.read(DcidevUtility.download_to_file(header_url)) rescue nil if header_url.present?
-      attachments.inline['footer'] = File.read(DcidevUtility.download_to_file(footer_url)) rescue nil if footer_url.present?
+      # attachments.inline['header'] = File.read(DcidevUtility.download_to_file(header_url)) rescue nil if header_url.present?
+      # attachments.inline['footer'] = File.read(DcidevUtility.download_to_file(footer_url)) rescue nil if footer_url.present?
 
       mail(
         to: to,
