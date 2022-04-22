@@ -188,9 +188,11 @@ attachments = [{file: DcidevUtility.download_to_file(self.ktp.url), filename: se
 ```
 
 ### Inline Images
-The gem currently only supports header & footer for the email body. Since gmail do not support link-based image, you have to format the images as inline attachments and use CID (Content-ID) to display each of them. The gem automatically take care of the programming. You only have to specify a valid link as the parameter.
+`MandrillMailer` supports sending images in the html body. As for `RailsMailer`, it currently only supports header & footer image. Feel free to contact me if you need such feature.
 
-The example to set the image in the template is shown below. This method works for both `RailsMailer` and `MandrillMailer`.
+Since gmail do not support link-based image, you have to format the images as inline attachments and use CID (Content-ID) to display each of them. The gem automatically takes care of the programming. You only have to specify a valid link as the parameter.
+
+The example to set the image in the template is shown below. This method works for both `RailsMailer` and `MandrillMailer` so you only need to code once.
 ```html
           <%
             header = attachments['header'].try(:url) || header
@@ -212,7 +214,7 @@ The example to set the image in the template is shown below. This method works f
 ```
 
 ### Development tips for custom SMTP server
-Some clients dont allow our server to access their SMTP server. To avoid blind coding, you can develop using google SMTP server.
+Some clients dont allow our server to access their SMTP server. To avoid blind coding, you can develop using google SMTP server to make sure that your program woks perfectly.
 Refer to https://dev.to/morinoko/sending-emails-in-rails-with-action-mailer-and-gmail-35g4 for the tutorial.
 
 ### Helpers
