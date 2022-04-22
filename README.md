@@ -211,6 +211,10 @@ The example to set the image in the template is shown below. This method works f
           <% end %>
 ```
 
+### Development tips for custom SMTP server
+Some clients dont allow our server to access their SMTP server. To avoid blind coding, you can develop using google SMTP server.
+Refer to https://dev.to/morinoko/sending-emails-in-rails-with-action-mailer-and-gmail-35g4 for the tutorial.
+
 ### Helpers
 ```ruby
 # convert all image URL in <img src="url"> to <img src="cid:xxxx">
