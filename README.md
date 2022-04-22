@@ -163,11 +163,11 @@ class MortgageMailer
                     header_url: template.header.try(:url),  
                     footer_url: template.footer.try(:url),  
                     file_attachments: file_attachments,  
-                    to: customer.email,  
+                    to: "#{customer.name} <#{customer.email}>",  
                     cc: nil, # can be a string / array
-                    bcc: nil, # can be a string / array
+                    bcc: ["John Doe <john.doe@gmail.com>", "Michael <michael@gmail.com>"], # can be a string / array
                     subject: template.subject,  
-                    from: ENV['DEFAULT_EMAIL_SENDER'],  
+                    from: "#{ENV['DEFAULT_EMAIL_SENDER_NAME']} <#{ENV['DEFAULT_EMAIL_SENDER']}>",  
                     template_path: "mail/blast.html.erb"  # specify template file location
                 ).deliver_now!  
             rescue => e  
@@ -185,6 +185,30 @@ end
 The attachment is an array of hashes containing attachment file and filename
 ```ruby
 attachments = [{file: DcidevUtility.download_to_file(self.ktp.url), filename: self.reference_number}]
+```
+
+### Inline Images
+The gem currently only supports header & footer for the email body. Since gmail do not support link-based image, you have to format the images as inline attachments and use CID (Content-ID) to display each of them. The gem automatically take care of the programming. You only have to specify a valid link as the parameter.
+
+The example to set the image in the template is shown below. This method works for both `RailsMailer` and `MandrillMailer`.
+```html
+          <%
+            header = attachments['header'].try(:url) || header
+            footer = attachments['footer'].try(:url) || footer
+          %>
+
+          <% if header.present? %>
+            <div id="header-section-img">
+
+              <img
+                src="<%= header %>"
+                alt="Header Image"
+                style="border-radius: 10px"
+                width="100%"
+                />
+
+            </div>
+          <% end %>
 ```
 
 ### Helpers
