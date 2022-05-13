@@ -3,7 +3,12 @@ This gem uses both Mandrill API and ActionMailer to send email.
 
 # Setup
 
-Add this to your `.env`
+Install mandrill mailer gem
+```
+gem 'mandrill_mailer'
+```
+
+Add `.env` configurations
 ```env
 BASE_URL_FE=
 DEFAULT_EMAIL_SENDER= 
