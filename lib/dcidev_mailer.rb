@@ -43,7 +43,7 @@ module DcidevMailer
         
         def format_header_footer(header_url: "", footer_url: "", locals: {}, images: {})
             [{ name: "header", url: header_url }, { name: "footer", url: footer_url }].each do |i|
-                return if i[:url].nil?
+                next if i[:url].nil?
                 begin
                     extension, encoded, _ = DcidevUtility.file_url_to_base64(i[:url])
                     locals[i[:name].to_sym] = "cid:#{i[:name]}"
