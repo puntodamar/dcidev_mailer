@@ -9,7 +9,7 @@ module DcidevMailer
                 ac = ActionController::Base.new
                 wording, images = DcidevMailer.format_image_from_html(html_body)
                 locals = { wording: wording, header: nil, footer: nil }
-                locals, images = DcidevMailer.format_header_footer(header_url: header_url, footer_url: footer_url, locals: locals, images: images) if header_url.present? && footer_url.present?
+                locals, images = DcidevMailer.format_header_footer(header_url: header_url, footer_url: footer_url, locals: locals, images: images) if header_url.present? || footer_url.present?
                 html_body = ac.render_to_string(template: email_template_path, locals: locals)
                 attachments = DcidevMailer.format_attachments(attachments) if attachments.present?
                 self.send_mail(subject, to, cc, bcc, html_body, attachments, images, from, from_name, preserve_recipients).deliver_now
